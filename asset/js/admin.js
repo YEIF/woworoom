@@ -121,10 +121,10 @@ function renderOrders(orders) {
 }
 
 function rederC3chart(type) {
+    //所有商品
     let cartsallProducts = [];
     ordersData.forEach(element => {
         element.products.forEach(item => {
-            //所有類別
             cartsallProducts.push({
                 title: item.title,
                 category: item.category,
