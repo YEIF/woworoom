@@ -261,7 +261,7 @@ function render_carts(carts, finalTotal) {
     let str = ""
     if (carts.length == 0) {
         // console.log("沒有商品")
-        str += `<div>目前尚未有商品</div>`
+        str += `<div style="color:#6A33F8">目前尚未有商品</div>`
         cartsList.innerHTML = str
     } else {
         carts.forEach(element => {

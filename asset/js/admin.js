@@ -53,7 +53,7 @@ function renderOrders(orders) {
     let view = ""
     if (orders.length == 0) {
         c3Select.setAttribute("disabled", "disabled")
-        view += `<div style="text-align: center ;font-size: 1.5rem; color:#EB7A77">目前尚未有訂單</div>`
+        view += `<div style="text-align: center ;font-size: 1.5rem; color:#6A33F8">目前尚未有訂單</div>`
         chart.innerHTML = view
         orderPageTable.innerHTML = `    <table class="orderPage-table">
         <thead>
