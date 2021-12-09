@@ -40,7 +40,7 @@ const sectionTitle = document.querySelector(".section-title")
 const orderPageList = document.querySelector(".orderPage-list")
 const c3Select = document.querySelector(".c3Select")
 let chart = document.querySelector("#chart")
-init()
+
 
 
 
@@ -121,15 +121,27 @@ function renderOrders(orders) {
 }
 
 function rederC3chart(type) {
+    let cartsallProducts = [];
+    ordersData.forEach(element => {
+        element.products.forEach(item => {
+            //所有類別
+            cartsallProducts.push({
+                title: item.title,
+                category: item.category,
+                price: item.price,
+                quantity: item.quantity
+            });
+        });
+    });
     switch (type) {
         case "C3itemsScale":
-            C3itemsScale();
+            C3itemsScale(cartsallProducts);
             break;
         case "C3itemsScalefilter":
-            C3itemsScalefilter();
+            C3itemsScalefilter(cartsallProducts);
             break;
         case "C3categoryScale":
-            C3categoryScale();
+            C3categoryScale(cartsallProducts);
             break;
         default:
             break
@@ -252,61 +264,19 @@ function c3chartsListener(e) {
     selectValue ? rederC3chart(selectValue) : null;
 }
 
-
-/*  let chart = c3.generate({
-//     bindto: '#chart', // HTML 元素綁定
-//     data: {
-//         type: "pie",
-//         columns: [
-//             ['Louvre 雙人床架', 1],
-//             ['Antony 雙人床架', 2],
-//             ['Anty 雙人床架', 3],
-//             ['其他', 4],
-//         ],
-//         colors: {
-//             "Louvre 雙人床架": "#DACBFF",
-//             "Antony 雙人床架": "#9D7FEA",
-//             "Anty 雙人床架": "#5434A7",
-//             "其他": "#301E5F",
-//         }
-//     },
-// });*/
-
-
-// function C3charts() {
-//     //renderOrders(ordersData)
-//     C3itemsScalefilter()
-//         //C3categoryScale()
-
-// }
-
-//C3 
-
 //全產品類別營收比重
-function C3categoryScale() {
+function C3categoryScale(data) {
     // //console.log(ordersData)
-    let cartsallProducts = []
-    let category = {}
-        //抓出訂單所有產品
-    ordersData.forEach(element => {
-        element.products.forEach(item => {
-            //所有類別
-            if (!category[item.category]) { category[item.category] = 0 }
-            cartsallProducts.push({
-                title: item.title,
-                category: item.category,
-                price: item.price,
-                quantity: item.quantity
-            });
-        });
+    let categoryObj = {}
+    data.forEach(element => {
+        if (!categoryObj[element.category]) { categoryObj[element.category] = 0; }
     });
-    // //console.log(category)
-    let categoryArr = Object.keys(category);
+    let categoryArr = Object.keys(categoryObj);
     //計算各類別
-    cartsallProducts.forEach(e => {
+    data.forEach(e => {
         categoryArr.forEach(i => {
             if (e.category == i) {
-                category[i] += e.price * e.quantity;
+                categoryObj[i] += e.price * e.quantity;
             }
         })
     });
@@ -314,7 +284,7 @@ function C3categoryScale() {
     let columnsData = [];
     let colorsData = {};
     let colors = ["#255359", "#336774", "#0089A7", "#33A6B8", "#81C7D4"];
-    categoryArr.forEach((item, index) => { columnsData.push([item, category[item]]) })
+    categoryArr.forEach((item, index) => { columnsData.push([item, categoryObj[item]]) })
         //排序
     columnsData.sort((a, b) => b[1] - a[1])
     columnsData.forEach((element, index) => { colorsData[element[0]] = colors[index] })
@@ -333,35 +303,24 @@ function C3categoryScale() {
 
 
 //全品項營收比重
-function C3itemsScale() {
-    // //console.log(ordersData)
-    let items = {}
-    let cartsallProducts = []
-    ordersData.forEach(element => {
-        element.products.forEach(item => {
-            if (!items[item.title]) { items[item.title] = 0 }
-            cartsallProducts.push({
-                title: item.title,
-                category: item.category,
-                price: item.price,
-                quantity: item.quantity
-            })
-        })
-    })
-    let itemsArr = Object.keys(items)
+function C3itemsScale(data) {
+    let allitemsObj = {}
+    data.forEach(element => {
+        if (!allitemsObj[element.title]) { allitemsObj[element.title] = 0; }
+    });
+    let allitemsArr = Object.keys(allitemsObj)
         // //console.log(items)
-        // //console.log(cartsallProducts)
-    cartsallProducts.forEach(e => {
-        itemsArr.forEach(i => {
+    data.forEach(e => {
+        allitemsArr.forEach(i => {
             if (e.title == i) {
-                items[i] += e.price * e.quantity;
+                allitemsObj[i] += e.price * e.quantity;
             }
         })
     })
     let columnsData = [];
     let colorsData = {};
     let colors = ["#255359", "#336774", "#0089A7", "#33A6B8", "#81C7D4"];
-    itemsArr.forEach((element, index) => { columnsData.push([element, items[element]]); });
+    allitemsArr.forEach((element, index) => { columnsData.push([element, items[element]]); });
     //排序
     columnsData.sort((a, b) => b[1] - a[1])
     columnsData.forEach((element, index) => { colorsData[element[0]] = colors[index] })
@@ -376,27 +335,18 @@ function C3itemsScale() {
         },
     });
     sectionTitle.innerHTML = "全品項營收比重"
-        // //console.log(itemsArr)
+        // //console.log(allitemsArr)
 }
 
 //全品項營收比重 前三名,其他排名
-function C3itemsScalefilter() {
+function C3itemsScalefilter(data) {
     //抓取訂單的所有產品資訊
     let allitemsObj = {}
-    let cartsallProducts = []
-    ordersData.forEach(element => {
-        element.products.forEach(item => {
-            if (!allitemsObj[item.title]) { allitemsObj[item.title] = 0 }
-            cartsallProducts.push({
-                title: item.title,
-                category: item.category,
-                price: item.price,
-                quantity: item.quantity
-            })
-        })
-    })
+    data.forEach(element => {
+        if (!allitemsObj[element.title]) { allitemsObj[element.title] = 0; }
+    });
     let allitemsArr = Object.keys(allitemsObj)
-    cartsallProducts.forEach(element => {
+    data.forEach(element => {
         allitemsArr.forEach(i => {
             if (element.title == i) {
                 allitemsObj[i] += element.price * element.quantity;
@@ -487,6 +437,6 @@ function orderState(detailId) {
     /*e1e1e1*/
 }
 
-
+init()
 orderPageList.addEventListener("click", orderPageListListener)
 c3Select.addEventListener("change", c3chartsListener)
