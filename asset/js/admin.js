@@ -320,7 +320,7 @@ function C3itemsScale(data) {
     let columnsData = [];
     let colorsData = {};
     let colors = ["#255359", "#336774", "#0089A7", "#33A6B8", "#81C7D4"];
-    allitemsArr.forEach((element, index) => { columnsData.push([element, items[element]]); });
+    allitemsArr.forEach((element, index) => { columnsData.push([element, allitemsObj[element]]); });
     //排序
     columnsData.sort((a, b) => b[1] - a[1])
     columnsData.forEach((element, index) => { colorsData[element[0]] = colors[index] })
