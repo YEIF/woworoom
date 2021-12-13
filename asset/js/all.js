@@ -69,11 +69,6 @@ function closeMenu() {
 const apiPath = 'eifu';
 const baseUrl = 'https://livejs-api.hexschool.io/'
 
-//getProductsData()
-
-//getshoppingCartData()
-//addProduct("Zzr5W1eNFtIxvagr4N90", 2)
-//getshoppingCartData()
 let productsData = [];
 let cartsData = []
 
@@ -363,6 +358,7 @@ function shoppingCartListener(e) {
     let carts_id;
     let num;
     const value = className ? className.split(" ").pop() : null
+    console.log(value)
     switch (value) {
         case "js-deleteCartAll":
             Swal.fire({
