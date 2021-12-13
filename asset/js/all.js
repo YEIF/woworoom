@@ -89,8 +89,9 @@ const addOrderInput = document.querySelectorAll(".orderInfo-inputWrap")
 const error = document.querySelectorAll(".orderInfo-message")
     //const allListener = document.querySelectorAll(".shoppingCart,.productWrap")
 
-// //console.log(deleteCart)
 
+
+// API
 function getProducts() {
     const url = `${baseUrl}api/livejs/v1/customer/${apiPath}/products`;
     // axios.get('https://livejs-api.hexschool.io/api/livejs/v1/customer/clothes/products')
@@ -217,30 +218,24 @@ function addOrder(e) {
             timer: 1500
         });
         postshoppingCart(orderObj)
-            // // console.log(Inputarr)
-            // const orderObjarr = Object.values(addOrderInput)
-            // //     //console.log(orderObjarr)
-            // const orderObj = {
-
-        // }
     }
 }
 
-
+//初始化
 function init() {
-    loading();
+    // loading();
     formEl.reset();
     error.forEach(element => { element.setAttribute('style', 'display:none;') });
     getProducts();
     getshoppingCarts();
 }
 
-function loading() {
+// function loading() {
 
-    setTimeout(() => {
+//     setTimeout(() => {
 
-    }, 10000);
-}
+//     }, 10000);
+// }
 
 function render_products(products) {
     let str = "";
@@ -308,13 +303,12 @@ function render_carts(carts, finalTotal) {
                  </tr>
         </table>
          `;
-
         cartsList.innerHTML = view
     }
 
 }
 
-
+//Listener 函式
 
 function formListener(e) {
     const errorMessage = formValidate();
@@ -338,14 +332,9 @@ function formListener(e) {
 
 function productsListListener(e) {
     e.preventDefault()
-        // console.log(e.target)
     const product_id = e.target.getAttribute("id");
-    // //console.log(cartId)
     if (product_id) {
-        // console.log(cartsData)
-        // console.log(product_id)
         let carts = cartsData.filter(item => item.product.id == product_id)
-            // console.log(carts)
         if (carts.length != 0) {
             Swal.fire({
                 position: 'center',
@@ -364,10 +353,7 @@ function productsListListener(e) {
             });
             addProduct(product_id, 1);
         }
-
-
     }
-
 }
 
 function shoppingCartListener(e) {
@@ -398,7 +384,6 @@ function shoppingCartListener(e) {
                 timer: 1500
             });
             deleteProduct(carts_id);
-            // //console.log("刪除單樣商品");
             break;
         case "js-patchAdd":
             carts_id = e.target.getAttribute("data-add")
@@ -411,7 +396,6 @@ function shoppingCartListener(e) {
                 showConfirmButton: false,
                 timer: 1500
             });
-            // console.log("增加數量");
             break;
         case "js-patchRemove":
             carts_id = e.target.getAttribute("data-remove")
@@ -424,37 +408,35 @@ function shoppingCartListener(e) {
                 showConfirmButton: false,
                 timer: 1500
             });
-            // console.log("減少數量");
             break;
         case "js-patchNum":
             carts_id = e.target.getAttribute("data-patchnum")
             let patchSelector = document.querySelector(`.js-patchproduct [data-patchnum=${carts_id}]`)
-            patchSelector.addEventListener("blur", function(e) {
-                    let patchNum = parseInt(e.target.value)
-                        // console.log(patchNum)
-                    if (patchNum == 0 || isNaN(patchNum)) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: '更改數量不能小於1',
-                            showConfirmButton: true,
-                            //timer: 1500
-                        });
-                        getshoppingCarts();
-                        return;
-                    } else {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: '更改數量成功',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        patchProduct(carts_id, patchNum);
-                    }
-                    // console.log(`更改${carts_id}訂單，數量為${e.target.value}`);
-                })
-                // console.log(e.target.value)
+            patchSelector.addEventListener("change", function(e) {
+                let patchNum = parseInt(e.target.value)
+                    // console.log(patchNum)
+                if (patchNum == 0 || isNaN(patchNum)) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '更改數量不能小於1',
+                        showConfirmButton: true,
+                        //timer: 1500
+                    });
+                    getshoppingCarts();
+                    return;
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: '更改數量成功',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    patchProduct(carts_id, patchNum);
+                }
+                // console.log(`更改${carts_id}訂單，數量為${e.target.value}`);
+            });
             break;
         default:
             break;
@@ -463,15 +445,9 @@ function shoppingCartListener(e) {
 
 
 function filterProductList(e) {
-    // console.log(e.target.value)
-    let filterData = productsData.filter(function(item) {
-        if (e.target.value == item.category || (e.target.value == '全部')) return item;
-    }); //使用 filter() 方法篩選與 e.target.value 相同 value 的資料
-    // //console.log(filterData)
+    let filterData = productsData.filter(item => e.target.value == item.category || e.target.value == '全部');
     render_products(filterData);
 }
-
-
 
 function formValidate() {
     const validateForm = {
@@ -516,14 +492,15 @@ function formValidate() {
 
 
 
+
+
 init();
 
 
-
+//Listener
 
 productSearch.addEventListener("change", filterProductList);
 shoppingCartList.addEventListener("click", shoppingCartListener);
-
 //allListener.forEach(e => { e.addEventListener("click", shoppingCartListener) })
 productsList.addEventListener("click", productsListListener);
 orderButton.addEventListener("click", addOrder);
