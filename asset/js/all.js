@@ -199,20 +199,30 @@ function addOrder(e) {
         const address = document.querySelector("#customerAddress");
         const tradeWay = document.querySelector("#tradeWay");
         const orderObj = {
-            name: name.value,
-            tel: tel.value,
-            email: email.value,
-            address: address.value,
-            payment: tradeWay.value,
+            name: name.value.trim(),
+            tel: tel.value.trim(),
+            email: email.value.trim(),
+            address: address.value.trim(),
+            payment: tradeWay.value.trim(),
         }
-        Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: '訂單送出成功',
-            showConfirmButton: false,
-            timer: 1500
-        });
-        postshoppingCart(orderObj)
+        if (cartsData.length == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: '購物車沒有商品，請加入商品',
+                showConfirmButton: true,
+            });
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '訂單送出成功',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            postshoppingCart(orderObj)
+        }
+
     }
 }
 
