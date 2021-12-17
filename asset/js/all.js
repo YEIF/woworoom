@@ -417,11 +417,11 @@ function shoppingCartListener(e) {
             break;
         case "js-patchNum":
             carts_id = e.target.getAttribute("data-patchnum")
-            let patchSelector = document.querySelector(`.js-patchproduct [data-patchnum=${carts_id}]`)
+            let patchSelector = document.querySelector(`.js-patchproduct [data-patchnum='${carts_id}']`)
             patchSelector.addEventListener("change", function(e) {
                 let patchNum = parseInt(e.target.value)
                     // console.log(patchNum)
-                if (patchNum == 0 || isNaN(patchNum)) {
+                if (patchNum <= 0 || isNaN(patchNum)) {
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
