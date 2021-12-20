@@ -368,7 +368,6 @@ function shoppingCartListener(e) {
     let carts_id;
     let num;
     const value = className ? className.split(" ").pop() : null
-    console.log(value)
     switch (value) {
         case "js-deleteCartAll":
             Swal.fire({
@@ -416,8 +415,9 @@ function shoppingCartListener(e) {
             });
             break;
         case "js-patchNum":
-            carts_id = e.target.getAttribute("data-patchnum")
-            let patchSelector = document.querySelector(`.js-patchproduct [data-patchnum='${carts_id}']`)
+        case "js-patchproduct":
+            value == "js-patchproduct" ? carts_id = e.target.children[1].getAttribute("data-patchnum") : carts_id = e.target.getAttribute("data-patchnum")
+            let patchSelector = document.querySelector(`.js-patchproduct [data-patchnum=${carts_id}]`)
             patchSelector.addEventListener("change", function(e) {
                 let patchNum = parseInt(e.target.value)
                     // console.log(patchNum)
