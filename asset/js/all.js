@@ -411,7 +411,7 @@ function shoppingCartListener (e) {
     case 'js-patchNum':
     case 'js-patchproduct': {
       value === 'js-patchproduct' ? cartsId = e.target.children[1].getAttribute('data-patchnum') : cartsId = e.target.getAttribute('data-patchnum')
-      const patchSelector = document.querySelector(`.js-patchproduct [data-patchnum=${cartsId}]`)
+      const patchSelector = document.querySelector(`.js-patchproduct [data-patchnum='${cartsId}']`)
       patchSelector.addEventListener('change', function (e) {
         const patchNum = parseInt(e.target.value)
         // console.log(patchNum)

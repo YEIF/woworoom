@@ -1,8 +1,8 @@
 #  WOWOROOM 簡易電商網站
 
-前台: https://yeif.github.io/Hexschool_Final/
+前台: https://yeif.github.io/woworoom/
 
-後台: https://yeif.github.io/Hexschool_Final/admin
+後台: https://yeif.github.io/woworoom/admin
 
 ## 功能
 
